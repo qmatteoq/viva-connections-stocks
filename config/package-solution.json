@@ -1,0 +1,46 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "viva-connections-stocks-client-side-solution",
+    "id": "40df9e11-08e4-44fe-9fe4-b3bdd7bedb9e",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "webApiPermissionRequests": [
+      {
+        "resource": "Stock Prices",
+        "scope": "access_as_user"
+      }
+    ],
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.15.2"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "viva-connections-stocks description"
+      },
+      "longDescription": {
+        "default": "viva-connections-stocks description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "viva-connections-stocks Feature",
+        "description": "The feature that activates elements of the viva-connections-stocks solution.",
+        "id": "b15040bb-7ca2-4c06-90df-1619b4ef83ed",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/viva-connections-stocks.sppkg"
+  }
+}

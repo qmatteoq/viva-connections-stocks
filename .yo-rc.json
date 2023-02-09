@@ -1,0 +1,17 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "version": "1.15.2",
+    "libraryName": "viva-connections-stocks",
+    "libraryId": "40df9e11-08e4-44fe-9fe4-b3bdd7bedb9e",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "viva-connections-stocks",
+    "solutionShortDescription": "viva-connections-stocks description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "adaptiveCardExtension",
+    "aceTemplateType": "Basic"
+  }
+}
