@@ -22,7 +22,8 @@
     "properties": {
       "title": "Stocks",
       "stockSymbol": "",
-      "appId": ""
+      "appId": "",
+      "apiUrl": ""
     },
     "cardSize": "Medium"
   }]

@@ -4,10 +4,11 @@ define([], function() {
     "TitleFieldLabel": "Card title",
     "Title": "Adaptive Card Extension",
     "StockCodeLabel": "Stock symbol",
+    "ApiUrlLabel": "API URL",
     "AADClientIdLabel": "AAD Client Id",
     "SubTitle": "Quick view",
     "PrimaryText": "SPFx Adaptive Card Extension",
     "Description": "Create your SPFx Adaptive Card Extension solution!",
-    "QuickViewButton": "Quick view"
+    "QuickViewButton": "See more"
   }
 });

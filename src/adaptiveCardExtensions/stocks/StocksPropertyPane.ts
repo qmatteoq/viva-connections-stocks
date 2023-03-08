@@ -16,6 +16,9 @@ export class StocksPropertyPane {
                 PropertyPaneTextField('stockSymbol', {
                   label: strings.StockCodeLabel
                 }),
+                PropertyPaneTextField('apiUrl', {
+                  label: strings.ApiUrlLabel
+                }),
                 PropertyPaneTextField('appId', {
                   label: strings.AADClientIdLabel
                 })

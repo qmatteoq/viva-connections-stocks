@@ -1,7 +1,7 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
   "solution": {
-    "name": "viva-connections-stocks-client-side-solution",
+    "name": "Viva Connections - Stocks",
     "id": "40df9e11-08e4-44fe-9fe4-b3bdd7bedb9e",
     "version": "1.0.0.0",
     "includeClientSideAssets": true,
@@ -22,10 +22,10 @@
     },
     "metadata": {
       "shortDescription": {
-        "default": "viva-connections-stocks description"
+        "default": "Viva Connections - Stocks"
       },
       "longDescription": {
-        "default": "viva-connections-stocks description"
+        "default": "Viva Connections - Stocks"
       },
       "screenshotPaths": [],
       "videoUrl": "",

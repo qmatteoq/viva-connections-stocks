@@ -10,6 +10,7 @@ export interface IStocksAdaptiveCardExtensionProps {
   title: string;
   stockSymbol: string;
   appId: string;
+  apiUrl: string;
 }
 
 export interface IStocksAdaptiveCardExtensionState {
@@ -26,13 +27,24 @@ export default class StocksAdaptiveCardExtension extends BaseAdaptiveCardExtensi
   private _deferredPropertyPane: StocksPropertyPane | undefined;
 
   public async onInit(): Promise<void> {
+    
     this.state = { 
       stock: null
     };
 
-    if (this.properties.stockSymbol !== "") {
+    if (this.properties.stockSymbol !== "" && this.properties.apiUrl !== "") {
+      await this.fetchData();
+    }
 
-      const url = "https://stockpricesapi.azurewebsites.net/api/stockPrices/" + this.properties.stockSymbol;
+    this.cardNavigator.register(CARD_VIEW_REGISTRY_ID, () => new CardView());
+    this.quickViewNavigator.register(QUICK_VIEW_REGISTRY_ID, () => new QuickView());
+
+    return Promise.resolve();
+  }
+
+  public async fetchData(): Promise<void> { 
+  
+      const url = this.properties.apiUrl + "/" + this.properties.stockSymbol;
 
       let response;
 
@@ -48,15 +60,6 @@ export default class StocksAdaptiveCardExtension extends BaseAdaptiveCardExtensi
       const parsedJson: Quote = JSON.parse(json) as Quote;
 
       this.setState({stock: parsedJson});
-    }
-    else {
-      this.setState({ stock: null});
-    }
-
-    this.cardNavigator.register(CARD_VIEW_REGISTRY_ID, () => new CardView());
-    this.quickViewNavigator.register(QUICK_VIEW_REGISTRY_ID, () => new QuickView());
-
-    return Promise.resolve();
   }
 
   protected loadPropertyPaneResources(): Promise<void> {
@@ -70,6 +73,30 @@ export default class StocksAdaptiveCardExtension extends BaseAdaptiveCardExtensi
         }
       );
   }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    protected onPropertyPaneFieldChanged(propertyPath: string, oldValue: any, newValue: any): void {
+      if (propertyPath === 'stockSymbol' && newValue !== oldValue) {
+        if (newValue) {
+          // eslint-disable-next-line no-void
+          void this.fetchData();
+        } 
+      }
+
+      if (propertyPath === 'apiUrl' && newValue !== oldValue) {
+        if (newValue) {
+          // eslint-disable-next-line no-void
+          void this.fetchData();
+        } 
+      }
+
+      if (propertyPath === 'appId' && newValue !== oldValue) {
+        if (newValue) {
+          // eslint-disable-next-line no-void
+          void this.fetchData();
+        } 
+      }
+    }
 
   protected renderCard(): string | undefined {
     return CARD_VIEW_REGISTRY_ID;

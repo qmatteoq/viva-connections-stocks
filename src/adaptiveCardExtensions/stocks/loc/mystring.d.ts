@@ -2,6 +2,7 @@ declare interface IStocksAdaptiveCardExtensionStrings {
   PropertyPaneDescription: string;
   TitleFieldLabel: string;
   StockCodeLabel:string;
+  ApiUrlLabel: string;
   AADClientIdLabel: string;
   Title: string;
   SubTitle: string;
