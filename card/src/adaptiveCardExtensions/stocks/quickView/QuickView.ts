@@ -8,12 +8,10 @@ export interface IQuickViewData {
   companyName: string;
   symbol: string;
   latestPrice: number;
-  change: number;
-  changePercent: number;
-  range: string;
   high: number;
   low: number;
   primaryExchange: string;
+  time: Date;
 }
 
 export class QuickView extends BaseAdaptiveCardView<
@@ -25,15 +23,13 @@ export class QuickView extends BaseAdaptiveCardView<
     return {
       subTitle: strings.SubTitle,
       title: strings.Title,
-      companyName: this.state.stock.shortName,
+      companyName: this.state.stock.companyName,
       symbol: this.state.stock.symbol,
-      latestPrice: this.state.stock.regularMarketPrice,
-      change: this.state.stock.regularMarketChange,
-      changePercent: this.state.stock.regularMarketChangePercent,
-      range: this.state.stock.regularMarketDayRange,
-      high: this.state.stock.regularMarketDayHigh,
-      low: this.state.stock.regularMarketDayLow,
-      primaryExchange: this.state.stock.quoteSourceName
+      latestPrice: this.state.stock.openingPrice,
+      high: this.state.stock.highestPrice,
+      low: this.state.stock.lowestPrice,
+      primaryExchange: this.state.stock.exchange,
+      time: this.state.stock.time
     };
   }
 

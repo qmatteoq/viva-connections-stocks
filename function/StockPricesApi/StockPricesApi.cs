@@ -1,8 +1,17 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading.Tasks;
+using AlphaVantage.Net.Common;
+using AlphaVantage.Net.Common.Intervals;
+using AlphaVantage.Net.Common.Size;
+using AlphaVantage.Net.Core.Client;
+using AlphaVantage.Net.Stocks;
+using AlphaVantage.Net.Stocks.Client;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -14,6 +23,7 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 using StockPricesApi.Models;
+using static System.Net.WebRequestMethods;
 
 namespace StockPricesApi
 {
@@ -33,7 +43,7 @@ namespace StockPricesApi
         [FunctionName("StockPricesApi")]
         [OpenApiOperation(operationId: "Run", tags: new[] { "name" })]
         [OpenApiParameter(name: "stock", In = ParameterLocation.Path, Required = true, Type = typeof(string), Description = "The **Stock** symbol")]
-        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(Quote), Description = "The stock quote")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(StockPrice), Description = "The stock quote")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "stockPrices/{stockSymbol}")] HttpRequest req, string stockSymbol)
         {
@@ -41,36 +51,53 @@ namespace StockPricesApi
             _logger.LogInformation($"Requested stock symbol: {stockSymbol}");
 
             var db = _redisCache.GetDatabase();
-            var json = await db.StringGetAsync($"StockPrice-{stockSymbol}");
+            // var json = await db.StringGetAsync($"StockPrice-{stockSymbol}");
+            var json = string.Empty;
 
-            Quote stockQuote;
+            StockPrice stockQuote;
 
             if (string.IsNullOrEmpty(json))
             {
                 _logger.LogInformation($"Stock price for {stockSymbol} not available in cache, getting a fresh value");
-                HttpClient client = new HttpClient();
-                var stock = await client.GetFromJsonAsync<StockPrice>($"https://query1.finance.yahoo.com/v7/finance/options/{stockSymbol}");
-                if (stock.optionChain.result.Length > 0)
+
+                string apiKey = "2175NFW0TSAEJGFC";
+                // there are 5 more constructors available
+                var client = new AlphaVantageClient(apiKey);
+                var stocksClient = client.Stocks();
+
+                StockTimeSeries stock = await stocksClient.GetTimeSeriesAsync("MSFT", Interval.Min60, OutputSize.Compact, isAdjusted: true);
+
+                var query = new Dictionary<string, string>()
                 {
-                    stockQuote = stock.optionChain.result[0].quote;
-                    var stockQuoteJson = JsonConvert.SerializeObject(stockQuote);
-                    int cacheExpireInHours = _configuration.GetValue<int>("CacheExpirationInHours");
-                    await db.StringSetAsync($"StockPrice-{stockSymbol}", stockQuoteJson, TimeSpan.FromHours(cacheExpireInHours));
-                    _logger.LogInformation($"Json saved into in Redis: {stockQuoteJson}");
-                }
-                else
-                {
-                    stockQuote = null;
-                }
+                    {"symbol", stockSymbol }
+                };
+
+                JsonDocument company = await client.RequestParsedJsonAsync(ApiFunction.OVERVIEW, query);
+
+
+                stockQuote = new StockPrice {
+                    OpeningPrice = stock.DataPoints.FirstOrDefault().OpeningPrice,
+                    ClosingPrice = stock.DataPoints.FirstOrDefault().ClosingPrice,
+                    HighestPrice = stock.DataPoints.FirstOrDefault().HighestPrice,
+                    LowestPrice = stock.DataPoints.FirstOrDefault().LowestPrice,
+                    Time = stock.DataPoints.FirstOrDefault().Time,
+                    Volume = stock.DataPoints.FirstOrDefault().Volume,
+                    CompanyName = company.RootElement.GetProperty("Name").GetString(),
+                    Exchange = company.RootElement.GetProperty("Exchange").GetString(),
+                    Symbol = company.RootElement.GetProperty("Symbol").GetString()
+                };
+
+                var stockQuoteJson = JsonConvert.SerializeObject(stockQuote);
+                int cacheExpireInHours = _configuration.GetValue<int>("CacheExpirationInHours");
+                await db.StringSetAsync($"StockPrice-{stockSymbol}", stockQuoteJson, TimeSpan.FromHours(cacheExpireInHours));
+                _logger.LogInformation($"Json saved into in Redis: {stockQuoteJson}");
             }
             else
             {
-                stockQuote = JsonConvert.DeserializeObject<Quote>(json);
+                stockQuote = JsonConvert.DeserializeObject<StockPrice>(json);
                 _logger.LogInformation($"Stock price for {stockSymbol} retrieved from Redis cache");
                 _logger.LogInformation($"Json read from Redis: {json}");
             }
-
-
 
             return stockQuote != null ? new OkObjectResult(stockQuote) : new NotFoundResult();
 

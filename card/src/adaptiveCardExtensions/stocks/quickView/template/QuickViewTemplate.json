@@ -18,7 +18,12 @@
                   "isSubtle": true,
                   "spacing": "None",
                   "wrap": true
-              }
+              },
+              {
+                "type": "TextBlock",
+                "text": "${time}",
+                "wrap": true
+            }
           ]
       },
       {
@@ -37,13 +42,6 @@
                                   "text": "${formatNumber(latestPrice, 2)} ",
                                   "size": "ExtraLarge",
                                   "wrap": true
-                              },
-                              {
-                                  "type": "TextBlock",
-                                  "text": "${if(change >= 0, '▲', '▼')} ${formatNumber(change,2)} USD (${formatNumber(changePercent * 100, 2)}%)",
-                                  "color": "${if(change >= 0, 'good', 'attention')}",
-                                  "spacing": "None",
-                                  "wrap": true
                               }
                           ]
                       },
@@ -54,10 +52,6 @@
                               {
                                   "type": "FactSet",
                                   "facts": [
-                                      {
-                                          "title": "Range",
-                                          "value": "${range} "
-                                      },
                                       {
                                           "title": "High",
                                           "value": "${high} "

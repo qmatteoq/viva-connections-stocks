@@ -3,7 +3,7 @@ import { BaseAdaptiveCardExtension } from '@microsoft/sp-adaptive-card-extension
 import { CardView } from './cardView/CardView';
 import { QuickView } from './quickView/QuickView';
 import { StocksPropertyPane } from './StocksPropertyPane';
-import { Quote } from './models/IStockPrice';
+import { IStockPrice } from './models/IStockPrice';
 import { AadHttpClient } from '@microsoft/sp-http';
 
 export interface IStocksAdaptiveCardExtensionProps {
@@ -14,7 +14,7 @@ export interface IStocksAdaptiveCardExtensionProps {
 }
 
 export interface IStocksAdaptiveCardExtensionState {
-  stock: Quote
+  stock: IStockPrice;
 }
 
 const CARD_VIEW_REGISTRY_ID: string = 'Stocks_CARD_VIEW';
@@ -57,7 +57,7 @@ export default class StocksAdaptiveCardExtension extends BaseAdaptiveCardExtensi
       }
 
       const json = await response.text();
-      const parsedJson: Quote = JSON.parse(json) as Quote;
+      const parsedJson: IStockPrice = JSON.parse(json) as IStockPrice;
 
       this.setState({stock: parsedJson});
   }

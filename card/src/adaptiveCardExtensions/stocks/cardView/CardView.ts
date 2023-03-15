@@ -25,8 +25,8 @@ export class CardView extends BasePrimaryTextCardView<IStocksAdaptiveCardExtensi
 
   public get data(): IPrimaryTextCardParameters {
     return {
-      description: this.state.stock !== null ? this.state.stock.shortName : "Please set a stock symbol",
-      primaryText: this.state.stock !== null ? this.state.stock.regularMarketPrice.toString() + " USD": "Please set a stock symbol",
+      description: this.state.stock !== null ? this.properties.stockSymbol : "Please set a stock symbol",
+      primaryText: this.state.stock !== null ? this.state.stock.openingPrice.toString() + " USD": "Please set a stock symbol",
       title: this.properties.title
     };
   }
