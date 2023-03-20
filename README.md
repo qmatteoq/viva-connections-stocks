@@ -1,10 +1,12 @@
-# viva-connections-stocks
+# Viva Connection stocks
 
 ## Summary
 
-Short summary on functionality and used technologies.
+This project is a card for Viva Connections to display stock prices. The card is built using SharePoint Adaptive Card extensions. The card uses a backend built using an Azure Function and Azure Cache for Redis.
 
-[picture of the solution in action, if possible]
+This project is described in the following articles:
+
+- Build a Viva Connections card to display stock prices - Part 1: the backend
 
 ## Used SharePoint Framework Version
 
@@ -19,13 +21,7 @@ Short summary on functionality and used technologies.
 
 ## Prerequisites
 
-> Any special pre-requisites?
-
-## Solution
-
-| Solution    | Author(s)                                               |
-| ----------- | ------------------------------------------------------- |
-| folder name | Author details (name, company, twitter alias with link) |
+- An Azure subscription
 
 ## Version history
 
