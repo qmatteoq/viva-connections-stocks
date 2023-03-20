@@ -4,9 +4,11 @@
 
 This project is a card for Viva Connections to display stock prices. The card is built using SharePoint Adaptive Card extensions. The card uses a backend built using an Azure Function and Azure Cache for Redis.
 
+![stock-card](https://user-images.githubusercontent.com/1230332/226460758-325308e8-3c1d-4c36-9a73-ee4132e78077.png)
+
 This project is described in the following articles:
 
-- Build a Viva Connections card to display stock prices - Part 1: the backend
+- [Build a Viva Connections card to display stock prices - Part 1: the backend](https://techcommunity.microsoft.com/t5/modern-work-app-consult-blog/build-a-viva-connections-card-to-display-stock-prices-part-1-the/ba-p/3773345)
 
 ## Used SharePoint Framework Version
 
@@ -35,30 +37,13 @@ This project is described in the following articles:
 **THIS CODE IS PROVIDED _AS IS_ WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
 
 ---
-
-## Minimal Path to Awesome
-
-- Clone this repository
-- Ensure that you are at the solution folder
-- in the command-line run:
-  - **npm install**
-  - **gulp serve**
-
-> Include any additional steps as needed.
-
 ## Features
 
-Description of the extension that expands upon high-level summary above.
+This card can be used to display any stock price in the Viva Connections portal. When you drag this card into the dashboard, you can customize:
 
-This extension illustrates the following concepts:
-
-- topic 1
-- topic 2
-- topic 3
-
-> Notice that better pictures and documentation will increase the sample usage and the value you are providing for others. Thanks for your submissions advance.
-
-> Share your web part with others through Microsoft 365 Patterns and Practices program to get visibility and exposure. More details on the community, open-source projects and other activities from http://aka.ms/m365pnp.
+- The stock to track
+- The URL of your backend
+- (Optional) If the API is protected by the Microsoft Identity platform, the id of the AAD app which supports single sign-on
 
 ## References
 
