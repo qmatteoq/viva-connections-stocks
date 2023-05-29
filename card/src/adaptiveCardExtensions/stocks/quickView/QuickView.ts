@@ -23,13 +23,13 @@ export class QuickView extends BaseAdaptiveCardView<
     return {
       subTitle: strings.SubTitle,
       title: strings.Title,
-      companyName: this.state.stock.companyName,
+      companyName: this.state.stock.shortName,
       symbol: this.state.stock.symbol,
-      latestPrice: this.state.stock.openingPrice,
-      high: this.state.stock.highestPrice,
-      low: this.state.stock.lowestPrice,
-      primaryExchange: this.state.stock.exchange,
-      time: this.state.stock.time
+      latestPrice: this.state.stock.regularMarketPrice,
+      high: this.state.stock.regularMarketDayHigh,
+      low: this.state.stock.regularMarketDayLow,
+      primaryExchange: this.state.stock.fullExchangeName,
+      time: this.state.stock.regularMarketTime,
     };
   }
 

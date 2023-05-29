@@ -4,7 +4,7 @@ import { CardView } from './cardView/CardView';
 import { QuickView } from './quickView/QuickView';
 import { StocksPropertyPane } from './StocksPropertyPane';
 import { IStockPrice } from './models/IStockPrice';
-import { AadHttpClient } from '@microsoft/sp-http';
+import { AadHttpClient, BeforeRedirectEventArgs } from '@microsoft/sp-http';
 
 export interface IStocksAdaptiveCardExtensionProps {
   title: string;
@@ -49,6 +49,11 @@ export default class StocksAdaptiveCardExtension extends BaseAdaptiveCardExtensi
       let response;
 
       if (this.properties.appId !== "") {
+        const tokenProvider = await this.context.aadTokenProviderFactory.getTokenProvider();
+        tokenProvider.onBeforeRedirectEvent.add(this, (args: BeforeRedirectEventArgs) => {
+          console.log("onBeforeRedirectEvent");
+          console.log(args);
+        });
         const aadClient = await this.context.aadHttpClientFactory.getClient("api://" + this.properties.appId);
         response = await aadClient.get(url, AadHttpClient.configurations.v1);
       }
@@ -56,10 +61,15 @@ export default class StocksAdaptiveCardExtension extends BaseAdaptiveCardExtensi
         response = await fetch(url);
       }
 
-      const json = await response.text();
-      const parsedJson: IStockPrice = JSON.parse(json) as IStockPrice;
+      try {
+        const json = await response.text();
+        const parsedJson: IStockPrice = JSON.parse(json) as IStockPrice;
+        this.setState({stock: parsedJson});
+      }
+      catch {
+        this.setState({stock: null});
+      }
 
-      this.setState({stock: parsedJson});
   }
 
   protected loadPropertyPaneResources(): Promise<void> {
