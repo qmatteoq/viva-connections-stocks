@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
 using AlphaVantage.Net.Common;
@@ -23,7 +21,6 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 using StockPricesApi.Models;
-using static System.Net.WebRequestMethods;
 
 namespace StockPricesApi
 {
@@ -51,8 +48,9 @@ namespace StockPricesApi
             _logger.LogInformation($"Requested stock symbol: {stockSymbol}");
 
             var db = _redisCache.GetDatabase();
-            // var json = await db.StringGetAsync($"StockPrice-{stockSymbol}");
-            var json = string.Empty;
+            var json = await db.StringGetAsync($"StockPrice-{stockSymbol}");
+
+            string json = string.Empty;
 
             StockPrice stockQuote;
 
@@ -60,8 +58,7 @@ namespace StockPricesApi
             {
                 _logger.LogInformation($"Stock price for {stockSymbol} not available in cache, getting a fresh value");
 
-                string apiKey = "2175NFW0TSAEJGFC";
-                // there are 5 more constructors available
+                string apiKey = _configuration.GetValue<string>("AlphaApiKey");                
                 var client = new AlphaVantageClient(apiKey);
                 var stocksClient = client.Stocks();
 

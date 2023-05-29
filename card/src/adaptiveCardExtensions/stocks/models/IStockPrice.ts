@@ -1,11 +1,11 @@
 export interface IStockPrice {
     closingPrice: number;
-    regularMarketDayHigh: number;
-    regularMarketDayLow: number;
-    regularMarketPrice: number;
+    highestPrice: number;
+    lowestPrice: number;
+    openingPrice: number;
     volume: number;
-    regularMarketTime: Date;
-    shortName: string;
-    fullExchangeName: string;
+    time: Date;
+    companyName: string;
+    exchange: string;
     symbol: string;
 }

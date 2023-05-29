@@ -3,11 +3,6 @@
     "secrets1": {
       "type": "secrets"
     },
-    "redis1": {
-      "type": "redis",
-      "connectionId": "CacheConnection",
-      "dynamicId": null
-    },
     "storage1": {
       "type": "storage",
       "connectionId": "AzureWebJobsStorage"
@@ -15,6 +10,10 @@
     "appInsights1": {
       "type": "appInsights",
       "connectionId": "APPLICATIONINSIGHTS_CONNECTION_STRING"
+    },
+    "redis1": {
+      "type": "redis",
+      "connectionId": "CacheConnection"
     }
   }
 }
